@@ -1,180 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Records | Bhairunath Dairy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Dairy Record</title>
 
   <style>
-    body {
-      font-family: Poppins, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #fff7c2, #ffe98a);
-      min-height: 100vh;
-      animation: fadeBg 6s infinite alternate ease-in-out;
-    }
-
-    @keyframes fadeBg {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    .container {
-      width: 90%;
-      max-width: 650px;
-      margin: 40px auto;
+    body { 
+      font-family: Poppins, sans-serif; 
+      background: linear-gradient(135deg, #fff7c2, #ffe27a);
       padding: 25px;
-      background: rgba(255,255,255,0.7);
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      animation: slideUp 0.8s ease;
+      animation: fade 0.6s ease-in-out;
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(35px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    h2 { 
+      text-align: center; 
+      color: #6a5200;
+      font-weight: 600;
     }
 
-    h2 {
-      text-align: center;
-      color: #5a4e00;
-      margin-bottom: 15px;
+    .card {
+      max-width: 450px; 
+      margin: auto; 
+      padding: 25px; 
+      background: white;
+      border-radius: 14px; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      animation: pop 0.5s ease;
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 12px;
+    input, button {
+      width: 100%; 
+      padding: 12px; 
+      margin: 10px 0;
+      border-radius: 8px; 
+      border: 2px solid #ffd966;
       font-size: 15px;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #ffb300;
-      color: #000;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
+      background: #ffb300; 
+      color: white; 
+      cursor: pointer; 
+      font-weight: 600;
       transition: 0.3s;
     }
-    button:hover { background: #e0a000; transform: scale(1.03); }
+
+    button:hover { 
+      background: #e09c00; 
+      transform: scale(1.02);
+    }
+
+    .clear-btn {
+      background: #ff4d4d;
+      margin-top: 10px;
+    }
+
+    .clear-btn:hover {
+      background: #d93636;
+      transform: scale(1.02);
+    }
 
     table {
-      width: 100%;
-      border-collapse: collapse;
+      width: 100%; 
+      border-collapse: collapse; 
       margin-top: 20px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
+      animation: fade 0.5s ease;
     }
 
     th, td {
-      padding: 12px;
+      border: 1px solid #ffe099; 
+      padding: 10px; 
       text-align: center;
-      border-bottom: 1px solid #eee;
     }
 
     th {
-      background: #ffe07a;
+      background: #ffeb99; 
+      color: #6a5200;
+      font-weight: 600;
     }
 
-    .totalBox {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff4b3;
-      border-radius: 10px;
-      font-size: 17px;
-      font-weight: bold;
+    @keyframes fade { 
+      from { opacity: 0; } 
+      to { opacity: 1; } 
     }
 
-    .clearBtn {
-      margin-top: 15px;
-      background: #ff4d4d;
-      color: #fff;
-    }
-
-    .clearBtn:hover {
-      background: #d93636;
+    @keyframes pop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Check Customer Record</h2>
+  <h2>Check Your Dairy Record</h2>
 
-  <input type="text" id="cid" placeholder="Enter Customer ID">
-  <button onclick="showRecord()">Show Record</button>
+  <div class="card">
 
-  <div id="result"></div>
-</div>
+    <!-- Input -->
+    <input type="text" id="cid" placeholder="Enter Your Customer ID">
 
-<script>
-function showRecord() {
-  let id = document.getElementById("cid").value.trim();
-  let data = JSON.parse(localStorage.getItem("dairyData")) || {};
+    <!-- Show Record Button -->
+    <button onclick="showRecord()">Show Record</button>
 
-  if (!id || !data[id]) {
-    document.getElementById("result").innerHTML = `<p>No record found.</p>`;
-    return;
-  }
+    <!-- Clear Current Customer Records -->
+    <button class="clear-btn" onclick="clearRecord()">Clear This Customer Record</button>
 
-  let cust = data[id];
-  let records = cust.records;
+    <div id="result"></div>
+  </div>
 
-  let totalLitre = 0;
-  let totalAmount = 0;
+  <script>
+    function showRecord() {
+      let id = document.getElementById("cid").value.trim();
+      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
 
-  let tableHTML = `
-    <h3>${cust.name} (ID: ${id})</h3>
-    <table>
-      <tr>
-        <th>Amount (₹)</th>
-        <th>Litre</th>
-        <th>Date</th>
-      </tr>
-  `;
+      if (!allData[id]) {
+        document.getElementById("result").innerHTML = "<p>No record found.</p>";
+        return;
+      }
 
-  records.forEach(r => {
-    tableHTML += `
-      <tr>
-        <td>${r.amount}</td>
-        <td>${r.litre}</td>
-        <td>${r.date}</td>
-      </tr>
-    `;
+      let name = allData[id].name;
+      let records = allData[id].records;
 
-    totalLitre += Number(r.litre);
-    totalAmount += Number(r.amount);
-  });
+      let html = `<h3>${name} (ID: ${id})</h3>
+                  <table>
+                    <tr><th>Amount</th><th>Date</th></tr>`;
 
-  tableHTML += `</table>`;
+      records.forEach(r => {
+        html += `<tr><td>${r.amount}</td><td>${r.date}</td></tr>`;
+      });
 
-  let totals = `
-    <div class="totalBox">
-      Total Litre: ${totalLitre} L<br>
-      Total Amount: ₹${totalAmount}
-    </div>
-    <button class="clearBtn" onclick="clearCustomer('${id}')">Clear This Customer Record</button>
-  `;
+      html += `</table>`;
 
-  document.getElementById("result").innerHTML = tableHTML + totals;
-}
+      document.getElementById("result").innerHTML = html;
+    }
 
-function clearCustomer(id) {
-  let data = JSON.parse(localStorage.getItem("dairyData")) || {};
-  delete data[id];
-  localStorage.setItem("dairyData", JSON.stringify(data));
-  alert("Customer records cleared!");
-  location.reload();
-}
-</script>
+    // ✔ Clear only this customer's record
+    function clearRecord() {
+      let id = document.getElementById("cid").value.trim();
+      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
+
+      if (!allData[id]) {
+        alert("No record exists for this ID.");
+        return;
+      }
+
+      if (confirm("Do you want to clear this customer's full record?")) {
+        allData[id].records = [];
+        localStorage.setItem("dairyData", JSON.stringify(allData));
+        document.getElementById("result").innerHTML = "<p>Record cleared successfully.</p>";
+      }
+    }
+  </script>
 
 </body>
 </html>

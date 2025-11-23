@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Dairy Record</title>
+
+  <style>
+    body { font-family:Poppins,sans-serif; background:#f0f3ff; padding:25px; }
+    h2 { text-align:center; }
+
+    .card {
+      max-width:430px; margin:auto; padding:25px; background:#fff;
+      border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      animation:fade 0.4s ease;
+    }
+
+    input, button {
+      width:100%; padding:12px; margin:10px 0;
+      border-radius:8px; border:1px solid #aaa;
+    }
+
+    button { background:#5868f8; color:#fff; cursor:pointer; }
+    button:hover { background:#4254f5; }
+
+    table {
+      width:100%; border-collapse:collapse; margin-top:20px;
+      animation:fade 0.5s ease;
+    }
+
+    th, td {
+      border:1px solid #ccc; padding:10px; text-align:center;
+    }
+
+    th { background:#5868f8; color:white; }
+
+    @keyframes fade { from {opacity:0;} to {opacity:1;} }
+  </style>
+</head>
+<body>
+
+  <h2>Check Your Dairy Record</h2>
+
+  <div class="card">
+    <input type="text" id="cid" placeholder="Enter Your Customer ID">
+    <button onclick="showRecord()">Show Record</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function showRecord() {
+      let id = document.getElementById("cid").value;
+
+      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
+
+      if (!allData[id]) {
+        document.getElementById("result").innerHTML = "<p>No record found.</p>";
+        return;
+      }
+
+      let name = allData[id].name;
+      let records = allData[id].records;
+
+      let html = `<h3>${name} (ID: ${id})</h3>
+                  <table>
+                    <tr><th>Amount</th><th>Date</th></tr>`;
+
+      records.forEach(r => {
+        html += `<tr><td>${r.amount}</td><td>${r.date}</td></tr>`;
+      });
+
+      html += `</table>`;
+
+      document.getElementById("result").innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>

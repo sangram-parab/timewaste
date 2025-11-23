@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: Poppins, sans-serif;
-      background: linear-gradient(135deg, #fff8c4, #ffe78f, #ffffff);
+      background: linear-gradient(135deg, #fff9c4, #ffe88a, #ffffff);
       height: 100vh;
       display: flex;
       align-items: center;
@@ -25,12 +25,12 @@
 
     .container {
       width: 380px;
-      background: rgba(255,255,255,0.25);
-      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.28);
+      backdrop-filter: blur(13px);
       padding: 30px;
-      border-radius: 15px;
+      border-radius: 18px;
       text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
       animation: fadeUp 0.7s ease;
     }
 
@@ -41,17 +41,17 @@
 
     h1 {
       color: #000;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       font-size: 28px;
-      letter-spacing: 1px;
       font-weight: 600;
     }
 
     .address {
       font-size: 13px;
-      color: #222;
-      margin-top: -10px;
+      color: #333;
+      margin-top: -5px;
       margin-bottom: 20px;
+      line-height: 18px;
     }
 
     input {
@@ -59,7 +59,7 @@
       padding: 12px;
       margin: 12px 0;
       border-radius: 10px;
-      border: 1px solid #bbb;
+      border: 1px solid #ccc;
       outline: none;
       font-size: 15px;
     }
@@ -68,7 +68,7 @@
       width: 100%;
       padding: 14px;
       margin-top: 10px;
-      background: #ffd633;
+      background: #ffcf33;
       color: #000;
       border-radius: 10px;
       cursor: pointer;
@@ -80,7 +80,7 @@
 
     .btn:hover {
       transform: scale(1.05);
-      background: #ffcc00;
+      background: #ffbb00;
     }
 
     .link-btn {
@@ -92,37 +92,39 @@
       font-size: 15px;
     }
 
-    /* Floating milk glass animations */
-    .milk {
+    /* Floating dairy icons */
+    .icon {
       position: absolute;
-      width: 40px;
+      width: 45px;
+      opacity: 0.88;
       animation: float 5s infinite ease-in-out;
-      opacity: 0.9;
     }
 
     @keyframes float {
       0% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
+      50% { transform: translateY(-18px); }
       100% { transform: translateY(0px); }
     }
 
-    .milk1 { top: 15%; left: 10%; animation-delay: 0.2s; }
-    .milk2 { top: 70%; left: 80%; animation-delay: 0.6s; }
-    .milk3 { top: 50%; left: 20%; animation-delay: 1s; }
-    .milk4 { top: 25%; left: 75%; animation-delay: 1.4s; }
+    .i1 { top: 12%; left: 10%; animation-delay: 0s; }
+    .i2 { top: 70%; left: 80%; animation-delay: 0.5s; }
+    .i3 { top: 50%; left: 18%; animation-delay: 1s; }
+    .i4 { top: 25%; left: 75%; animation-delay: 1.3s; }
+
   </style>
 </head>
 
 <body>
 
-  <!-- Milk glass animation images -->
-  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk1">
-  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk2">
-  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk3">
-  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk4">
+  <!-- Dairy-friendly icons (NO beef) -->
+  <img src="https://cdn-icons-png.flaticon.com/512/1998/1998610.png" class="icon i1"> <!-- Cute cow -->
+  <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="icon i2"> <!-- Milk bottle -->
+  <img src="https://cdn-icons-png.flaticon.com/512/2909/2909763.png" class="icon i3"> <!-- Small cow head -->
+  <img src="https://cdn-icons-png.flaticon.com/512/135/135620.png" class="icon i4"> <!-- Milk splash -->
 
   <div class="container">
     <h1>Bhairunath Dairy</h1>
+
     <div class="address">
       near Santula Arcade building,<br>
       Kopargaon West 421202
@@ -133,7 +135,6 @@
 
     <button class="btn" onclick="login()">Login</button>
 
-    <br><br>
     <span class="link-btn" onclick="window.location='consumerView.html'">
       Check Consumer Records
     </span>

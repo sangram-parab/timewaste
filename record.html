@@ -10,27 +10,26 @@
       margin: 0;
       padding: 0;
       font-family: Poppins, sans-serif;
-      background: linear-gradient(135deg, #6a5af9, #8d5bff, #5bd8ff);
-      height: 100vh;
+      background: linear-gradient(135deg, #fff5b0, #ffe27a, #fff1c1);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: bgShift 10s infinite alternate ease-in-out;
+      animation: fadeBg 10s infinite alternate ease-in-out;
     }
 
-    @keyframes bgShift {
+    @keyframes fadeBg {
       0% { background-position: 0% 50%; }
       100% { background-position: 100% 50%; }
     }
 
     .card {
-      width: 420px;
-      padding: 25px;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(12px);
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      animation: slideUp 0.7s ease;
+      width: 430px;
+      padding: 28px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      animation: slideUp 0.6s ease;
     }
 
     @keyframes slideUp {
@@ -40,9 +39,9 @@
 
     h2 {
       text-align: center;
-      color: #fff;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px rgba(255,255,255,0.6);
+      color: #6b5200;
+      margin-bottom: 18px;
+      font-weight: 600;
     }
 
     input {
@@ -50,8 +49,9 @@
       padding: 12px;
       margin: 10px 0;
       border-radius: 10px;
-      border: none;
+      border: 2px solid #ffd86c;
       outline: none;
+      background: #fffef5;
       font-size: 15px;
     }
 
@@ -65,22 +65,23 @@
       padding: 14px;
       margin-top: 10px;
       font-size: 16px;
-      background: #000;
+      background: #ffb300;
       color: #fff;
       border: none;
       border-radius: 12px;
       cursor: pointer;
       transition: 0.3s ease;
+      font-weight: 600;
     }
 
     button:hover {
-      background: #222;
+      background: #e09c00;
       transform: scale(1.05);
     }
 
     .logout {
       margin-top: 12px;
-      color: #fff;
+      color: #8a6f00;
       text-align: center;
       cursor: pointer;
       text-decoration: underline;
@@ -98,9 +99,11 @@
     <input type="text" id="cname" placeholder="Customer Name">
 
     <div class="row">
-      <input type="number" id="amt" placeholder="Amount (₹)">
-      <input type="number" id="litre" placeholder="Litre (L)">
+      <input type="number" id="litre" placeholder="Litre (L)" oninput="autoCalc()">
+      <input type="number" id="price" placeholder="Price Per Litre (₹)" oninput="autoCalc()">
     </div>
+
+    <input type="number" id="amt" placeholder="Total Amount (₹)" readonly style="background:#fff4c2;">
 
     <input type="date" id="date">
 
@@ -117,14 +120,27 @@
       window.location = "index.html";
     }
 
+    // ✔ Auto Calculate Amount
+    function autoCalc() {
+      let litre = parseFloat(document.getElementById("litre").value);
+      let price = parseFloat(document.getElementById("price").value);
+
+      if (!isNaN(litre) && !isNaN(price)) {
+        document.getElementById("amt").value = (litre * price).toFixed(2);
+      } else {
+        document.getElementById("amt").value = "";
+      }
+    }
+
     function saveRecord() {
       let id = document.getElementById("cid").value.trim();
       let name = document.getElementById("cname").value.trim();
-      let amount = document.getElementById("amt").value;
       let litre = document.getElementById("litre").value;
+      let price = document.getElementById("price").value;
+      let amount = document.getElementById("amt").value;
       let date = document.getElementById("date").value;
 
-      if (!id || !name || !amount || !litre || !date) {
+      if (!id || !name || !litre || !price || !amount || !date) {
         alert("Please fill all fields");
         return;
       }
@@ -139,8 +155,8 @@
       }
 
       allData[id].records.push({
-        amount,
         litre,
+        amount,
         date
       });
 
@@ -148,8 +164,9 @@
 
       alert("Record Saved Successfully!");
 
-      document.getElementById("amt").value = "";
       document.getElementById("litre").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("amt").value = "";
     }
 
     function logout() {

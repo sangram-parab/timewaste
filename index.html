@@ -9,12 +9,13 @@
     body {
       margin: 0;
       font-family: Poppins, sans-serif;
-      background: linear-gradient(135deg, #5a5ff7, #9068ff, #6dd5fa);
+      background: linear-gradient(135deg, #fff8c4, #ffe78f, #ffffff);
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: bgmove 10s infinite alternate ease-in-out;
+      animation: bgmove 8s infinite alternate ease-in-out;
+      overflow: hidden;
     }
 
     @keyframes bgmove {
@@ -24,74 +25,108 @@
 
     .container {
       width: 380px;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      padding: 28px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px);
+      padding: 30px;
       border-radius: 15px;
       text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.18);
       animation: fadeUp 0.7s ease;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(25px); }
+      from { opacity: 0; transform: translateY(30px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
-      color: white;
+      color: #000;
       margin-bottom: 20px;
       font-size: 28px;
       letter-spacing: 1px;
-      animation: glow 2s infinite alternate;
+      font-weight: 600;
     }
 
-    @keyframes glow {
-      from { text-shadow: 0 0 8px #fff; }
-      to   { text-shadow: 0 0 18px #fff; }
+    .address {
+      font-size: 13px;
+      color: #222;
+      margin-top: -10px;
+      margin-bottom: 20px;
     }
 
     input {
       width: 100%;
       padding: 12px;
       margin: 12px 0;
-      border-radius: 8px;
-      border: none;
+      border-radius: 10px;
+      border: 1px solid #bbb;
+      outline: none;
+      font-size: 15px;
     }
 
     .btn {
       width: 100%;
       padding: 14px;
       margin-top: 10px;
-      background: #000;
-      color: #fff;
+      background: #ffd633;
+      color: #000;
       border-radius: 10px;
       cursor: pointer;
       font-size: 16px;
-      letter-spacing: 1px;
+      font-weight: bold;
       transition: 0.3s ease;
+      border: none;
     }
 
     .btn:hover {
       transform: scale(1.05);
-      background: #222;
+      background: #ffcc00;
     }
 
     .link-btn {
       display: inline-block;
       margin-top: 14px;
-      color: #fff;
+      color: #000;
       text-decoration: underline;
       cursor: pointer;
       font-size: 15px;
     }
+
+    /* Floating milk glass animations */
+    .milk {
+      position: absolute;
+      width: 40px;
+      animation: float 5s infinite ease-in-out;
+      opacity: 0.9;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .milk1 { top: 15%; left: 10%; animation-delay: 0.2s; }
+    .milk2 { top: 70%; left: 80%; animation-delay: 0.6s; }
+    .milk3 { top: 50%; left: 20%; animation-delay: 1s; }
+    .milk4 { top: 25%; left: 75%; animation-delay: 1.4s; }
   </style>
 </head>
 
 <body>
 
+  <!-- Milk glass animation images -->
+  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk1">
+  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk2">
+  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk3">
+  <img src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" class="milk milk4">
+
   <div class="container">
     <h1>Bhairunath Dairy</h1>
+    <div class="address">
+      near Santula Arcade building,<br>
+      Kopargaon West 421202
+    </div>
 
     <input type="text" id="ownerName" placeholder="Enter Owner Name">
     <input type="password" id="password" placeholder="Enter Password">
@@ -99,7 +134,9 @@
     <button class="btn" onclick="login()">Login</button>
 
     <br><br>
-    <span class="link-btn" onclick="window.location='consumerView.html'">Check Consumer Records</span>
+    <span class="link-btn" onclick="window.location='consumerView.html'">
+      Check Consumer Records
+    </span>
   </div>
 
   <script>

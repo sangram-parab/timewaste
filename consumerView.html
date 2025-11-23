@@ -1,80 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Dairy Record</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhairunath Dairy | Consumer Records</title>
 
   <style>
-    body { font-family:Poppins,sans-serif; background:#f0f3ff; padding:25px; }
-    h2 { text-align:center; }
-
-    .card {
-      max-width:430px; margin:auto; padding:25px; background:#fff;
-      border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      animation:fade 0.4s ease;
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #fff8cc, #ffe47a);
+      margin: 0;
+      padding: 20px;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    input, button {
-      width:100%; padding:12px; margin:10px 0;
-      border-radius:8px; border:1px solid #aaa;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    button { background:#5868f8; color:#fff; cursor:pointer; }
-    button:hover { background:#4254f5; }
+    h1 {
+      text-align: center;
+      color: #6b4f00;
+      font-size: 32px;
+      margin-bottom: 5px;
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .sub {
+      text-align: center;
+      color: #8a6f00;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 750px;
+      margin: auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      animation: pop 0.7s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.93); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
 
     table {
-      width:100%; border-collapse:collapse; margin-top:20px;
-      animation:fade 0.5s ease;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
     }
 
     th, td {
-      border:1px solid #ccc; padding:10px; text-align:center;
+      padding: 12px;
+      text-align: center;
+      border-bottom: 2px solid #ffe99f;
     }
 
-    th { background:#5868f8; color:white; }
+    th {
+      background: #ffeb99;
+      color: #5d4500;
+      font-size: 18px;
+    }
 
-    @keyframes fade { from {opacity:0;} to {opacity:1;} }
+    td {
+      background: #fffdf3;
+      font-weight: 500;
+    }
+
+    .no-records {
+      text-align: center;
+      padding: 15px;
+      color: #a68000;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .clear-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 22px;
+      border: none;
+      background: #ffb300;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .clear-btn:hover {
+      background: #e09c00;
+      transform: scale(1.05);
+    }
+
+    .icon-box {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .icon-box img {
+      width: 65px;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
   </style>
 </head>
+
 <body>
 
-  <h2>Check Your Dairy Record</h2>
+  <h1>Bhairunath Dairy</h1>
+  <div class="sub">Customer Record Summary</div>
 
-  <div class="card">
-    <input type="text" id="cid" placeholder="Enter Your Customer ID">
-    <button onclick="showRecord()">Show Record</button>
+  <div class="icon-box">
+    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png">
+  </div>
 
-    <div id="result"></div>
+  <div class="container">
+    <h2 id="customerName"></h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Milk (Litres)</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="recordTable"></tbody>
+    </table>
+
+    <div id="noRecords" class="no-records" style="display:none;">No records found</div>
+
+    <button class="clear-btn" onclick="clearCustomerRecords()">Clear All Records</button>
   </div>
 
   <script>
-    function showRecord() {
-      let id = document.getElementById("cid").value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const customerID = urlParams.get("id");
 
-      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
+    const allData = JSON.parse(localStorage.getItem("dairyRecords")) || {};
+    const customerData = allData[customerID];
 
-      if (!allData[id]) {
-        document.getElementById("result").innerHTML = "<p>No record found.</p>";
-        return;
+    const recordTable = document.getElementById("recordTable");
+    const noRecords = document.getElementById("noRecords");
+
+    if (!customerData) {
+      noRecords.style.display = "block";
+    } else {
+      document.getElementById("customerName").innerText =
+        customerData.name + " (ID: " + customerID + ")";
+
+      if (customerData.records.length === 0) {
+        noRecords.style.display = "block";
+      } else {
+        customerData.records.forEach(rec => {
+          const row = `<tr>
+            <td>${rec.date}</td>
+            <td>${rec.litre}</td>
+            <td>₹${rec.amount}</td>
+          </tr>`;
+          recordTable.innerHTML += row;
+        });
       }
+    }
 
-      let name = allData[id].name;
-      let records = allData[id].records;
-
-      let html = `<h3>${name} (ID: ${id})</h3>
-                  <table>
-                    <tr><th>Amount</th><th>Date</th></tr>`;
-
-      records.forEach(r => {
-        html += `<tr><td>${r.amount}</td><td>${r.date}</td></tr>`;
-      });
-
-      html += `</table>`;
-
-      document.getElementById("result").innerHTML = html;
+    function clearCustomerRecords() {
+      if (confirm("Do you really want to clear all records for this customer?")) {
+        allData[customerID].records = [];
+        localStorage.setItem("dairyRecords", JSON.stringify(allData));
+        location.reload();
+      }
     }
   </script>
-
 </body>
 </html>

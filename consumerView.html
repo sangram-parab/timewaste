@@ -6,52 +6,113 @@
   <title>Your Dairy Record</title>
 
   <style>
-    body { font-family:Poppins,sans-serif; background:#f0f3ff; padding:25px; }
-    h2 { text-align:center; }
+    body { 
+      font-family: Poppins, sans-serif; 
+      background: linear-gradient(135deg, #fff7c2, #ffe27a);
+      padding: 25px;
+      animation: fade 0.6s ease-in-out;
+    }
+
+    h2 { 
+      text-align: center; 
+      color: #6a5200;
+      font-weight: 600;
+    }
 
     .card {
-      max-width:430px; margin:auto; padding:25px; background:#fff;
-      border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      animation:fade 0.4s ease;
+      max-width: 450px; 
+      margin: auto; 
+      padding: 25px; 
+      background: white;
+      border-radius: 14px; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+      animation: pop 0.5s ease;
     }
 
     input, button {
-      width:100%; padding:12px; margin:10px 0;
-      border-radius:8px; border:1px solid #aaa;
+      width: 100%; 
+      padding: 12px; 
+      margin: 10px 0;
+      border-radius: 8px; 
+      border: 2px solid #ffd966;
+      font-size: 15px;
     }
 
-    button { background:#5868f8; color:#fff; cursor:pointer; }
-    button:hover { background:#4254f5; }
+    button {
+      background: #ffb300; 
+      color: white; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    button:hover { 
+      background: #e09c00; 
+      transform: scale(1.02);
+    }
+
+    .clear-btn {
+      background: #ff4d4d;
+      margin-top: 10px;
+    }
+
+    .clear-btn:hover {
+      background: #d93636;
+      transform: scale(1.02);
+    }
 
     table {
-      width:100%; border-collapse:collapse; margin-top:20px;
-      animation:fade 0.5s ease;
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 20px;
+      animation: fade 0.5s ease;
     }
 
     th, td {
-      border:1px solid #ccc; padding:10px; text-align:center;
+      border: 1px solid #ffe099; 
+      padding: 10px; 
+      text-align: center;
     }
 
-    th { background:#5868f8; color:white; }
+    th {
+      background: #ffeb99; 
+      color: #6a5200;
+      font-weight: 600;
+    }
 
-    @keyframes fade { from {opacity:0;} to {opacity:1;} }
+    @keyframes fade { 
+      from { opacity: 0; } 
+      to { opacity: 1; } 
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
+
 <body>
 
   <h2>Check Your Dairy Record</h2>
 
   <div class="card">
+
+    <!-- Input -->
     <input type="text" id="cid" placeholder="Enter Your Customer ID">
+
+    <!-- Show Record Button -->
     <button onclick="showRecord()">Show Record</button>
+
+    <!-- Clear Current Customer Records -->
+    <button class="clear-btn" onclick="clearRecord()">Clear This Customer Record</button>
 
     <div id="result"></div>
   </div>
 
   <script>
     function showRecord() {
-      let id = document.getElementById("cid").value;
-
+      let id = document.getElementById("cid").value.trim();
       let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
 
       if (!allData[id]) {
@@ -73,6 +134,23 @@
       html += `</table>`;
 
       document.getElementById("result").innerHTML = html;
+    }
+
+    // ✔ Clear only this customer's record
+    function clearRecord() {
+      let id = document.getElementById("cid").value.trim();
+      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
+
+      if (!allData[id]) {
+        alert("No record exists for this ID.");
+        return;
+      }
+
+      if (confirm("Do you want to clear this customer's full record?")) {
+        allData[id].records = [];
+        localStorage.setItem("dairyData", JSON.stringify(allData));
+        document.getElementById("result").innerHTML = "<p>Record cleared successfully.</p>";
+      }
     }
   </script>
 

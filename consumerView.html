@@ -6,37 +6,97 @@
   <title>Your Dairy Record</title>
 
   <style>
-    body { font-family:Poppins,sans-serif; background:#f0f3ff; padding:25px; }
-    h2 { text-align:center; }
+    body {
+      font-family: Poppins, sans-serif;
+      background: linear-gradient(135deg, #fff7c2, #ffe88a);
+      padding: 25px;
+      animation: fadeBg 8s infinite alternate ease-in-out;
+    }
+
+    @keyframes fadeBg {
+      0% { background: linear-gradient(135deg, #fff7c2, #ffe88a); }
+      100% { background: linear-gradient(135deg, #ffe88a, #fff7c2); }
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 700;
+      color: #5a4a00;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8);
+    }
 
     .card {
-      max-width:430px; margin:auto; padding:25px; background:#fff;
-      border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      animation:fade 0.4s ease;
+      max-width: 450px;
+      margin: auto;
+      padding: 25px;
+      background: #ffffffcc;
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     input, button {
-      width:100%; padding:12px; margin:10px 0;
-      border-radius:8px; border:1px solid #aaa;
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: 1px solid #d1b300;
+      font-size: 15px;
     }
 
-    button { background:#5868f8; color:#fff; cursor:pointer; }
-    button:hover { background:#4254f5; }
+    input {
+      background: #fffbea;
+    }
+
+    button {
+      background: #e6c200;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #f5d300;
+      transform: scale(1.04);
+    }
 
     table {
-      width:100%; border-collapse:collapse; margin-top:20px;
-      animation:fade 0.5s ease;
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      animation: fade 0.6s ease;
     }
 
     th, td {
-      border:1px solid #ccc; padding:10px; text-align:center;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #e0c400;
     }
 
-    th { background:#5868f8; color:white; }
+    th {
+      background: #ffe164;
+      color: #000;
+      font-weight: bold;
+    }
 
-    @keyframes fade { from {opacity:0;} to {opacity:1;} }
+    td {
+      background: #fffef0;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
   </style>
 </head>
+
 <body>
 
   <h2>Check Your Dairy Record</h2>
@@ -48,6 +108,7 @@
     <div id="result"></div>
   </div>
 
+
   <script>
     function showRecord() {
       let id = document.getElementById("cid").value;
@@ -55,16 +116,19 @@
       let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
 
       if (!allData[id]) {
-        document.getElementById("result").innerHTML = "<p>No record found.</p>";
+        document.getElementById("result").innerHTML =
+          "<p style='color:red; font-weight:600;'>No record found.</p>";
         return;
       }
 
       let name = allData[id].name;
       let records = allData[id].records;
 
-      let html = `<h3>${name} (ID: ${id})</h3>
-                  <table>
-                    <tr><th>Amount</th><th>Date</th></tr>`;
+      let html = `
+        <h3 style='color:#5a4a00; text-align:center;'>${name} (ID: ${id})</h3>
+        <table>
+          <tr><th>Amount (₹)</th><th>Date</th></tr>
+      `;
 
       records.forEach(r => {
         html += `<tr><td>${r.amount}</td><td>${r.date}</td></tr>`;

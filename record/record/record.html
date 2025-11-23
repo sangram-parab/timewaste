@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Customer Records</title>
+  <style>
+    body { font-family:Poppins,sans-serif; background:#eef3ff; padding:20px; }
+    h2 { margin-bottom:20px; }
+
+    .card {
+      background:#fff; padding:20px; border-radius:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      max-width:420px; margin:auto; animation:fade 0.4s ease;
+    }
+
+    input, button {
+      width:100%; padding:12px; margin:8px 0;
+      border-radius:8px; border:1px solid #ccc;
+    }
+
+    button {
+      background:#5868f8; color:#fff; cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover { background:#4254f5; }
+
+    @keyframes fade { from {opacity:0;} to {opacity:1;} }
+  </style>
+</head>
+<body>
+
+  <h2>Add Customer Record</h2>
+
+  <div class="card">
+    <input type="text" id="cid" placeholder="Customer ID">
+    <input type="text" id="cname" placeholder="Customer Name">
+    <input type="text" id="amount" placeholder="Amount / Liters">
+    <input type="date" id="date">
+
+    <button onclick="saveRecord()">Save Record</button>
+  </div>
+
+  <script>
+    function saveRecord() {
+      let id = document.getElementById("cid").value;
+      let name = document.getElementById("cname").value;
+      let amount = document.getElementById("amount").value;
+      let date = document.getElementById("date").value;
+
+      if (!id || !name || !amount || !date) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      let allData = JSON.parse(localStorage.getItem("dairyData")) || {};
+
+      if (!allData[id]) {
+        allData[id] = { name: name, records: [] };
+      }
+
+      allData[id].records.push({ amount, date });
+
+      localStorage.setItem("dairyData", JSON.stringify(allData));
+
+      alert("Record Saved Successfully!");
+    }
+  </script>
+
+</body>
+</html>
